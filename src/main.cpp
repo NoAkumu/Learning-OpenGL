@@ -4,6 +4,9 @@
 
 #include <GLFW/glfw3.h>
 
+// Hello triangle
+#include "./hellotriangle.cpp"
+
 // Functions
 void SizeCallback(GLFWwindow* windowm, int w, int h);
 void processInput(GLFWwindow* window);
@@ -41,6 +44,8 @@ int main() {
 
     // Window resize callback
     glfwSetFramebufferSizeCallback(window, SizeCallback);
+
+    RenderTriangle();
 
     // Render loop
     while (!glfwWindowShouldClose(window))

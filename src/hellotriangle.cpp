@@ -4,10 +4,10 @@
 
 #include <GLFW/glfw3.h>
 
+int ShaderCompileErrorHandle(int shader);
+
 // -- Hello Triangle --
-int main() {
-        
-    
+void RenderTriangle() {
     // Triangle vertices
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
@@ -21,11 +21,10 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // -- Vertex shader --
     #pragma region Vextex Shader
     // Vertex shader code in GLSL
     const char *vertexShaderSource = 
-    #include "./shaders/shader.vs"
+    #include "./shaders/shader.glvs"
     ;
     
     // Creates vertex shader
@@ -35,30 +34,40 @@ int main() {
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader); // Compiles shader
 
-    // Shader compiling error handling
-    int sucess;
-    char infolog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &sucess);
-
-    if (sucess) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infolog);
-        std::cout << "Couldn't compile shader" << infolog << std::endl;
-    }
+    ShaderCompileErrorHandle(vertexShader);
     #pragma endregion Vextex Shader
-
-
+    
     #pragma region Fragment Shader
-
     // Fragment shader code in GLSL
     const char *fragShaderSource = 
-    "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
+    #include "./shaders/shader.glfs"
+    ;
 
-    #pragma endregion 
+    // Creates vertex shader
+    unsigned int fragmentShader;
+    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    // Binds Shader code to the vertex shader created    
+    glShaderSource(fragmentShader, 1, &fragShaderSource, NULL);
+    glCompileShader(fragmentShader); // Compiles shader
 
-    #pragma endregion Hello Triangle
+    ShaderCompileErrorHandle(fragmentShader);
+    #pragma endregion Fragment Shader
+
+    // Create shader program
+    unsigned int shaderProgram;
+    
+}
+
+int ShaderCompileErrorHandle(int shader){
+        // Shader compiling error handling
+    int sucess;
+    char infolog[512];
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &sucess);
+
+    if (!sucess) {
+        glGetShaderInfoLog(shader, 512, NULL, infolog);
+        std::cout << "Couldn't compile shader" << infolog << std::endl;
+        return -1;
+    }
+    return 0;
 }
