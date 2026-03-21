@@ -35,13 +35,14 @@ int main() {
         return -1;
     }
 
-    // Selects the ccreated window
+    // Selects the created window
     glfwMakeContextCurrent(window);
-    glViewport(0,0,800,600);
+    glViewport(0,0,SCR_WIDTH,SCR_HEIGHT);
 
+    // Window resize callback
     glfwSetFramebufferSizeCallback(window, SizeCallback);
 
-    //////////////////////////////////////////////////////////
+    // Hello Triangle
 
     // Triangle
     float vertices[] = {
@@ -87,6 +88,7 @@ int main() {
         glfwPollEvents();
     }
 
+    // Ends process
     glfwTerminate();
     return 0;
 }
