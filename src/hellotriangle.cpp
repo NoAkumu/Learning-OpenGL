@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 int ShaderCompileErrorHandle(int shader);
+int ShaderProgramErrorHandle(int shader);
 
 // -- Hello Triangle --
 void RenderTriangle() {
@@ -55,7 +56,21 @@ void RenderTriangle() {
 
     // Create shader program
     unsigned int shaderProgram;
-    
+    shaderProgram = glCreateProgram();
+    // Attaches Vertex and Fragment shader to the program
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    // Error Handling
+    ShaderProgramErrorHandle(shaderProgram);
+
+    // Using program
+    glUseProgram(shaderProgram);
+
+    // Delete shaders
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 }
 
 int ShaderCompileErrorHandle(int shader){
@@ -67,6 +82,20 @@ int ShaderCompileErrorHandle(int shader){
     if (!sucess) {
         glGetShaderInfoLog(shader, 512, NULL, infolog);
         std::cout << "Couldn't compile shader" << infolog << std::endl;
+        return -1;
+    }
+    return 0;
+}
+
+int ShaderProgramErrorHandle(int program){
+        // Shader compiling error handling
+    int sucess;
+    char infolog[512];
+    glGetProgramiv(program, GL_LINK_STATUS, &sucess);
+
+    if (!sucess) {
+        glGetProgramInfoLog(program, 512, NULL, infolog);
+        std::cout << "Couldn't link the shader program" << infolog << std::endl;
         return -1;
     }
     return 0;
