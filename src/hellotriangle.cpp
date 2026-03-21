@@ -1,7 +1,6 @@
-#include <GLES2/gl2.h>
-#include <EGL/egl.h>
 #include <iostream>
-
+#include <GLES3/gl3.h>
+#include <EGL/egl.h>
 #include <GLFW/glfw3.h>
 
 int ShaderCompileErrorHandle(int shader);
@@ -19,8 +18,9 @@ void RenderTriangle() {
     // Vertex buffer
     unsigned int VBO;
     glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    // Vertex array
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
 
     #pragma region Vextex Shader
     // Vertex shader code in GLSL
@@ -54,6 +54,7 @@ void RenderTriangle() {
     ShaderCompileErrorHandle(fragmentShader);
     #pragma endregion Fragment Shader
 
+    #pragma region Shader Program
     // Create shader program
     unsigned int shaderProgram;
     shaderProgram = glCreateProgram();
@@ -65,12 +66,23 @@ void RenderTriangle() {
     // Error Handling
     ShaderProgramErrorHandle(shaderProgram);
 
-    // Using program
-    glUseProgram(shaderProgram);
+    #pragma endregion Shader Program
 
     // Delete shaders
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+
+    
+    // Copy vertices to buffer
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    // Set the Vertex attribute pointers
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // Using shader program to render triangle
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO);
+    
 }
 
 int ShaderCompileErrorHandle(int shader){
