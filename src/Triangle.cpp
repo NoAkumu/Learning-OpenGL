@@ -2,14 +2,14 @@
 #include <iostream>
 #include <Primitives/Triangle.h>
 
-// Triangle vertices
-float vertices[] = {
-    0.0f,  0.5f, 0.0f, // Top Center
-    0.5f, -0.5f, 0.0f, // Bottom Right
-    -0.5f, -0.5f, 0.0f, // Bottom Left
-};
-
 int Triangle::setup() {
+    // Triangle vertices
+    float vertices[] = {
+        0.0f,  0.5f, 0.0f, // Top Center
+        0.5f, -0.5f, 0.0f, // Bottom Right
+        -0.5f, -0.5f, 0.0f, // Bottom Left
+    };
+
 
     #pragma region Vextex Shader
     // Vertex shader code in GLSL
