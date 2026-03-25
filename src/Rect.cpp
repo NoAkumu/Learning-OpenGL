@@ -14,7 +14,7 @@ int Rect::setup() {
         0, 1, 2,
         0, 2, 3
     };
-    
+
     #pragma region Vextex Shader
     // Vertex shader code in GLSL
     const char *vertexShaderSource = 
@@ -107,6 +107,8 @@ int Rect::setup() {
 
     // Using shader program to render both Rect to make a square
     glUseProgram(shaderProgram);
+    
+    return 0;
 }
 
 void Rect::draw() const {

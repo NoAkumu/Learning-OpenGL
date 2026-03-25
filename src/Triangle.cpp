@@ -99,6 +99,8 @@ int Triangle::setup() {
 
     // Using shader program to render both triangles to make a square
     glUseProgram(shaderProgram);
+
+    return 0;
 }
 
 void Triangle::draw() const {
