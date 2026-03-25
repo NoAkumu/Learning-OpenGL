@@ -95,8 +95,6 @@ int Triangle::setup() {
     glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
     // Using shader program to render both triangles to make a square
     glUseProgram(shaderProgram);
 
@@ -104,10 +102,14 @@ int Triangle::setup() {
 }
 
 void Triangle::draw() const {
+    if(wireframe){
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 Triangle::~Triangle() {

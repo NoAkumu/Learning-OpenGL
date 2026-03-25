@@ -112,9 +112,13 @@ int Rect::setup() {
 }
 
 void Rect::draw() const {
+    if(wireframe){
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 Rect::~Rect() {

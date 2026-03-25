@@ -51,6 +51,7 @@ int main() {
     glfwSetFramebufferSizeCallback(window, SizeCallback);
 
     Triangle trig;
+    Rect rt;
 
     // Render loop
     while (!glfwWindowShouldClose(window))
@@ -63,6 +64,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         trig.draw();
+        rt.draw();
 
         // End loop, calling events and swapping buffers
         glfwSwapBuffers(window);
@@ -82,6 +84,8 @@ void SizeCallback(GLFWwindow* windowm, int w, int h)
 }
 
 void processInput(GLFWwindow* window) {
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }
