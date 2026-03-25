@@ -1,6 +1,11 @@
 #include <glad/glad.h>
 #include <iostream>
 #include <Primitives/Triangle.h>
+#include <GLFW/glfw3.h>
+#include <cmath>
+
+// Create shader program
+static unsigned int shaderProgram;
 
 int Triangle::setup() {
     // Triangle vertices
@@ -60,8 +65,7 @@ int Triangle::setup() {
     #pragma endregion Fragment Shader
 
     #pragma region Shader Program
-    // Create shader program
-    unsigned int shaderProgram;
+
     shaderProgram = glCreateProgram();
     // Attaches Vertex and Fragment shader to the program
     glAttachShader(shaderProgram, vertexShader);
@@ -106,6 +110,11 @@ void Triangle::draw() const {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
     
+    float time = glfwGetTime();
+    float RedTime = (sin(time)/2.0f)+0.5f;
+    int ColorVertexLocation = glGetUniformLocation(shaderProgram, "Color");
+    glUniform4f(ColorVertexLocation, RedTime , 0.0f , 0.0f, 0.0f);
+
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);

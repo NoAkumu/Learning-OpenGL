@@ -60,11 +60,11 @@ int main() {
         processInput(window);
 
         // Clear the screen
-        glClearColor(.2,.2,.2,1);
+        glClearColor(1,1,1,1);
         glClear(GL_COLOR_BUFFER_BIT);
 
         trig.draw();
-        rt.draw();
+        //rt.draw();
 
         // End loop, calling events and swapping buffers
         glfwSwapBuffers(window);
