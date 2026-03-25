@@ -11,7 +11,7 @@ C_SRC   := $(shell find src -name "*.c")
 
 OBJ := $(CPP_SRC:.cpp=.o) $(C_SRC:.c=.o)
 
-TARGET = app
+TARGET = app.out
 
 all: $(TARGET)
 
