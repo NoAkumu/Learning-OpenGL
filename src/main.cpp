@@ -128,18 +128,21 @@ int main() {
 
     #pragma endregion Shader Program
 
-    // Vertex buffer & Vertex array
-    unsigned int VBO, VAO;
+    // Vertex buffer & Vertex array & Element Buffer
+    unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
     
     // Copy vertices to buffer and configure VAO
-    glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     // Set the Vertex attribute pointers
     glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    // Binds EBO and copy data to it
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     #pragma endregion Hello Triangle
 
@@ -153,9 +156,11 @@ int main() {
         glClearColor(.2,.2,.2,1);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Using shader program to render triangle
+        // Using shader program to render both triangles to make a square
         glUseProgram(shaderProgram);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
 
         // End loop, calling events and swapping buffers
         glfwSwapBuffers(window);
